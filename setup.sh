@@ -57,7 +57,7 @@ compile() {
 	PATH=${BIN_FOLDER}:${PATH} make \
 	O=${out_dir} \
 	CC="${CLANG_TCHAIN}" \
-	CLANG_TRIPLE=aarch64-linux-gnu- \
+	CLANG_TRIPLE=aarch64-opt-linux-android- \
 	CROSS_COMPILE=${TOOL_CHAIN_PATH} \
     KBUILD_COMPILER_STRING="${CLANG_VERSION}" \
 	HOSTCC="${CLANG_TCHAIN}" \
