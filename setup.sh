@@ -20,6 +20,10 @@ sudo  ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libG
 sudo apt-get install -y ccache &&echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a ~/.bashrc &&source ~/.bashrc && echo $PATH
 git clone --branch=oreo-mr1 https://github.com/revanthstrakz/StRaKz-KeRnEl-MiDo ~/SK
 git clone --branch=opt-gnu-8.x https://github.com/krasCGQ/aarch64-linux-android gcc8opt
+mkdir ~/clang
+cd ~/clang
+wget https://github.com/revanthstrakz/zip/raw/master/dragontc.zip
+unzip dragontc.zip
 export USE_CCACHE=1
 export ARCH=arm64
 export KD=$HOME/SK
