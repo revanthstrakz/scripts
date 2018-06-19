@@ -1,5 +1,37 @@
 #!/bin/bash
 source "env.sh";
+alias setperf='echo "performance" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
+alias setsave='echo "powersave" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor'
+
+# Set timezone
+export TZ="Asia/Kolkata";
+
+# Colors
+black='\e[0;30m'
+blue='\e[0;34m'
+green='\e[0;32m'
+cyan='\e[0;36m'
+red='\e[0;31m'
+purple='\e[0;35m'
+brown='\e[0;33m'
+lightgray='\e[0;37m'
+darkgray='\e[1;30m'
+lightblue='\e[1;34m'
+lightgreen='\e[1;32m'
+lightcyan='\e[1;36m'
+lightred='\e[1;31m'
+lightpurple='\e[1;35m'
+yellow='\e[1;33m'
+white='\e[1;37m'
+nc='\e[0m'
+
+function transfer() {
+
+zipname="$(echo $1 | awk -F '/' '{print $NF}')";
+url="$(curl -# -T $1 https://transfer.sh)";
+printf '\n';
+echo -e "Download $zipname at $url";
+}
 
 sudo apt-get update -y
 sudo add-apt-repository --yes ppa:webupd8team/java
@@ -68,27 +100,21 @@ compile() {
     $JOBS
 }
 
-zipit () {
-    if [[ ! -f "${IMAGE}" ]]; then
-        echo -e "Build failed :P";
-        exit 1;
-    else
-        echo -e "Build Succesful!";
-    fi
-    echo "**** Copying zImage ****"
-    cp arch/arm64/boot/Image.gz-dtb ${ZIPPER_DIR}/tools/
-    echo "**** Copying modules ****"
-
-    cd ${ZIPPER_DIR}/
-    zip -r9 ${ZIP_NAME} * -x README ${ZIP_NAME}
-    rm -rf ${kernel_dir}/SK/anykernel/${ZIP_NAME}
-    mv ${ZIPPER_DIR}/${ZIP_NAME} ${kernel_dir}/SK/anykernel/${ZIP_NAME}
-}
 
 make_a_fucking_defconfig
 compile
-cp -v "${IMAGE2}" "${HOME}/SK/anykernel/";
-cd ${HOME}/SK/anykernel/;
+echo -e "Copying kernel image";
+cp -v "${IMAGE}" "${ANYKERNEL}/";
+cp -v "${IMAGE2}" "${ANYKERNEL}/";
+cp ${OUTDIR}/net/ipv4/tcp_bic.ko ${ANYKERNEL}/
+cp ${OUTDIR}/net/ipv4/tcp_htcp.ko ${ANYKERNEL}/
+cp ${OUTDIR}/arch/arm64/boot/dts/qcom/msm8953-qrd-sku3-mido-t.dtb ${ANYKERNEL}/
+cp ${OUTDIR}/arch/arm64/boot/dts/qcom/msm8953-qrd-sku3-mido-nt.dtb ${ANYKERNEL}/
+cp ${OUTDIR}/arch/arm64/boot/dts/msm8953-qrd-sku3-mido-t.dtb ${ANYKERNEL}/
+cp ${OUTDIR}/arch/arm64/boot/dts/msm8953-qrd-sku3-mido-nt.dtb ${ANYKERNEL}/
+
+cd -;
+cd ${ANYKERNEL};
 zip -r9 ${FINAL_ZIP} *;
 cd -;
 
@@ -99,6 +125,4 @@ echo -e "Uploading ${ZIPNAME} to https://transfer.sh/";
 transfer "${FINAL_ZIP}";
 else
 echo -e "Zip Creation Failed =(";
-fi # FINAL_ZIP check
-zipit
-cd ${kernel_dir}
+fi # FINAL_ZIP check 
