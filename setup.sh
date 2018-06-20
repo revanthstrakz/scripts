@@ -51,10 +51,11 @@ sudo apt-get install -y libxml2-utils xsltproc zlib1g-dev:i386
 sudo  ln -s /usr/lib/i386-linux-gnu/mesa/libGL.so.1 /usr/lib/i386-linux-gnu/libGL.so
 sudo apt-get install -y ccache &&echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a ~/.bashrc &&source ~/.bashrc && echo $PATH
 git clone --branch=oreo-mr1 https://github.com/revanthstrakz/StRaKz-KeRnEl-MiDo ~/SK
-git clone --branch=opt-gnu-8.x https://github.com/krasCGQ/aarch64-linux-android gcc8opt
+git clone --branch=opt-gnu-8.x https://github.com/krasCGQ/aarch64-linux-android ~/gcc8opt
 mkdir ~/clang
 cd ~/clang
 wget https://github.com/revanthstrakz/zip/raw/master/dragontc.zip
+mv dragontc.zip ~/clang/dragontc.zip
 unzip dragontc.zip
 export USE_CCACHE=1
 export ARCH=arm64
