@@ -87,7 +87,7 @@ cd $kernel_dir
 make clean && make mrproper
 
 make_a_fucking_defconfig() {
-	make $CONFIG_FILE
+	make $CONFIG_FILE O=out
 }
 
 compile() {
